@@ -5,7 +5,7 @@ galaxy_info:
   role_name: gitea
   namespace: lstig
   author: Luke Stigdon
-  description: gitea role
+  description: Git with a cup of tea! Painless self-hosted all-in-one software development service, including Git hosting, code review, team collaboration, package registry and CI/CD.
   license: MIT
   min_ansible_version: "2.10"
   # https://galaxy.ansible.com/api/v1/platforms/
@@ -28,3 +28,8 @@ galaxy_info:
         - jammy # 22.04
   galaxy_tags:
     - gitea
+    - git
+    - git-server
+    - git-gui
+    - devops
+    - self-hosted
