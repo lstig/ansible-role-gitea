@@ -44,6 +44,12 @@ jobs:
         distro:
           - rockylinux8
           - rockylinux9
+          - fedora38
+          - fedora39
+          - ubuntu2004
+          - ubuntu2204
+          - debian11
+          - debian12
 
     steps:
       - name: Check out the codebase.
