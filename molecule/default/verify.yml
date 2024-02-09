@@ -1,0 +1,15 @@
+---
+# This is an example playbook to execute Ansible tests.
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Initialize role
+      ansible.builtin.include_role:
+        name: lstig.gitea
+        tasks_from: init
+        public: true
+
+    - name: Example assertion
+      ansible.builtin.assert:
+        that: true
