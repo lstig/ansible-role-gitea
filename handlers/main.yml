@@ -1,0 +1,6 @@
+---
+- name: Daemon reload
+  ansible.builtin.systemd:
+    name: "{{ gitea_daemon }}"
+    state: "{{ gitea_state }}"
+    daemon_reload: true

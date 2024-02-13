@@ -1,7 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: Include gitea
-      ansible.builtin.include_role:
-        name: lstig.gitea
+  roles:
+    - lstig.gpg
+    - lstig.gitea

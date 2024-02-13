@@ -1,2 +1,152 @@
 ---
-# defaults file for gitea
+gitea_user: git
+gitea_group: git
+gitea_user_home: /home/{{ gitea_user }}
+gitea_version: 1.21.4
+
+gitea_gpg_key: 7C9E68152594688862D62AF62D9AE806EC1592E2
+gitea_gpg_key_server: hkps://keys.openpgp.org
+gitea_binary: gitea-{{ gitea_version }}-{{ ansible_system | lower }}-{{ __architecture[ansible_architecture] }}
+gitea_signature: "{{ gitea_binary }}.asc"
+gitea_download_url: https://dl.gitea.com/gitea/{{ gitea_version }}
+gitea_bin_dir: /usr/local/bin
+
+gitea_daemon: gitea
+gitea_state: started
+gitea_enabled: true
+
+gitea_log_dir: /var/log/gitea
+gitea_work_dir: /var/lib/gitea
+gitea_config_dir: /etc/gitea
+
+# gitea_run_mode: prod
+# gitea_app_name: Gitea
+
+# gitea_server_protocol: http
+# gitea_server_root_url: "{{ gitea_server_protocol }}://{{ ansible_fqdn }}/"
+# gitea_server_http_port: 80
+# gitea_server_domain: "{{ ansible_fqdn }}"
+# gitea_server_ssh_port: 22
+# gitea_server_disable_ssh: false
+# gitea_server_offline_mode: true
+
+# gitea_config:
+#   general:
+#     RUN_USER: "{{ gitea_user }}"
+#     RUN_MODE: prod
+#     APP_NAME: Stignet
+#     WORK_PATH: "{{ gitea_work_dir }}"
+
+#   repository:
+#     ROOT: "{{ gitea_work_dir }}/repos"
+#     SCRIPT_TYPE: sh
+
+#   server:
+#     STATIC_ROOT_PATH: /usr/share/webapps/gitea
+#     APP_DATA_PATH: "{{ gitea_work_dir }}/data"
+#     LFS_START_SERVER: true
+#     LFS_JWT_SECRET: mJrZQr_PcbY4VI-jIaz36f_JqHuqdh8lbtoSK0uGcaM
+#     PROTOCOL: https
+#     ROOT_URL: https://{{ ansible_fqdn }}/
+#     HTTP_PORT: 443
+#     CERT_FILE: pki/cert.pem
+#     KEY_FILE: pki/key.pem
+#     REDIRECT_OTHER_PORT: true
+#     PORT_TO_REDIRECT: 80
+#     LANDING_PAGE: login
+#     SSH_DOMAIN: "{{ ansible_fqdn }}"
+#     DOMAIN: "{{ ansible_fqdn }}"
+#     DISABLE_SSH: false
+#     SSH_PORT: 22
+#     OFFLINE_MODE: true
+
+#   database:
+#     DB_TYPE: sqlite3
+#     PATH: "{{ gitea_work_dir }}/db/gitea.db"
+#     SSL_MODE: disable
+#     HOST:
+#     NAME:
+#     USER:
+#     PASSWD:
+#     SCHEMA:
+#     CHARSET: utf8
+#     LOG_SQL: false
+
+#   session:
+#     PROVIDER: file
+
+#   log:
+#     ROOT_PATH: "{{ gitea_log_dir }}"
+#     MODE: file
+#     LEVEL: Info
+#     STACKTRACE_LEVEL: None
+#     logger.router.MODE:
+#     logger.xorm.MODE:
+#     logger.access.MODE: access-file
+
+#   log.console:
+#     MODE: console
+#     FLAGS: stdflags
+#     PREFIX:
+#     COLORIZE: false
+
+#   log.file:
+#     FILE_NAME: gitea.log
+#     # 28 := 256MB
+#     MAX_SIZE_SHIFT: 28
+#     LOG_ROTATE: true
+#     DAILY_ROTATE: true
+#     MAX_DAYS: 30
+#     COMPRESS: true
+#     COMPRESSION_LEVEL: -1
+
+#   log.access-file:
+#     MODE: file
+#     FILE_NAME: access.log
+#     # 28:= 256MB
+#     MAX_SIZE_SHIFT: 28
+#     LOG_ROTATE: true
+#     DAILY_ROTATE: true
+#     MAX_DAYS: 90
+#     COMPRESS: true
+#     COMPRESSION_LEVEL: -1
+
+#   queue:
+#     MAX_WORKERS: 2
+
+#   mailer:
+#     ENABLED: false
+
+#   service:
+#     REGISTER_EMAIL_CONFIRM: false
+#     ENABLE_NOTIFY_MAIL: false
+#     DISABLE_REGISTRATION: true
+#     ALLOW_ONLY_EXTERNAL_REGISTRATION: false
+#     ENABLE_CAPTCHA: false
+#     REQUIRE_SIGNIN_VIEW: true
+#     DEFAULT_KEEP_EMAIL_PRIVATE: true
+#     DEFAULT_ALLOW_CREATE_ORGANIZATION: true
+#     DEFAULT_ENABLE_TIMETRACKING: true
+#     NO_REPLY_ADDRESS: "noreply.{{ ansible_fqdn }}"
+
+#   picture:
+#     DISABLE_GRAVATAR: true
+#     ENABLE_FEDERATED_AVATAR: false
+
+#   openid:
+#     ENABLE_OPENID_SIGNIN: false
+#     ENABLE_OPENID_SIGNUP: false
+
+#   repository.pull-request:
+#     DEFAULT_MERGE_STYLE: merge
+
+#   repository.signing:
+#     DEFAULT_TRUST_MODEL: committer
+
+#   security:
+#     INSTALL_LOCK: true
+#     INTERNAL_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE2NzkyNDg3NzJ9.WKu7KZoToeoOT8M07zh9bKITvgM1CqAZJj1gWmvzxGs
+#     PASSWORD_HASH_ALGO: pbkdf2
+
+#   oauth2:
+#     JWT_SECRET: qnM1Zi3LldFOLQbzi6vC3K1evQIZA7XGEIPbR6pw3Qk

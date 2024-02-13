@@ -1,2 +1,6 @@
 ---
-# vars file for gitea
+__architecture:
+  x86_64: amd64
+  aarch64: arm64
+  armv6l: arm
+  armv7l: arm

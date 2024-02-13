@@ -1,2 +1,71 @@
 ---
-# tasks file for gitea
+- name: Include variables
+  ansible.builtin.include_vars: main.yml
+
+- name: Check gitea version
+  ansible.builtin.command: "{{ gitea_bin_dir }}/gitea --version"
+  register: _result
+  changed_when: _result.rc != 0
+  # 'Errno 2' is 'file not found' - which is expected if gitea isn't installed
+  failed_when: >
+    (_result.rc != 0) and
+    ('Errno 2' not in _result.msg)
+
+- name: Install gitea
+  ansible.builtin.include_tasks: install.yml
+  when: _result.rc != 0 or _result.stdout.split(' ')[2] != gitea_version
+
+- name: Create group - {{ gitea_group }}
+  ansible.builtin.group:
+    name: "{{ gitea_group }}"
+    system: true
+    state: present
+
+- name: Create user - {{ gitea_user }}
+  ansible.builtin.user:
+    name: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    home: "{{ gitea_user_home }}"
+    password: "*" # password disabled
+    comment: Git Version Control
+    system: true
+    state: present
+
+- name: Create gitea directories
+  ansible.builtin.file:
+    dest: "{{ item }}"
+    state: directory
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: "0750"
+  loop:
+    - "{{ gitea_log_dir }}"
+    - "{{ gitea_work_dir }}"
+    - "{{ gitea_config_dir }}"
+
+# - name: Create gitea configuration file
+#   ansible.builtin.template:
+#     src: app.ini.j2
+#     dest: "{{ gitea_config_path }}/app.ini"
+#     owner: root
+#     group: root
+#     mode: "0444"
+
+- name: Create gitea systemd service file
+  ansible.builtin.template:
+    src: gitea.service.j2
+    dest: /etc/systemd/system/gitea.service
+    owner: root
+    group: root
+    mode: "0444"
+  notify:
+    - Daemon reload
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure gitea is started and enabled (if configured)
+  ansible.builtin.service:
+    name: "{{ gitea_daemon }}"
+    state: "{{ gitea_state }}"
+    enabled: "{{ gitea_enabled }}"

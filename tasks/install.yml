@@ -1,0 +1,46 @@
+---
+- name: install | Create temporary working directory
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: temp
+  register: _workdir
+
+- name: install | Download gitea release and signature
+  ansible.builtin.get_url:
+    url: "{{ gitea_download_url }}/{{ item }}"
+    dest: "{{ _workdir.path }}/{{ item }}"
+    mode: "0600"
+  loop:
+    - "{{ gitea_binary }}"
+    - "{{ gitea_signature }}"
+
+- name: install | Import signing key - {{ gitea_gpg_key }}
+  ansible.builtin.command: gpg --keyserver {{ gitea_gpg_key_server }} --recv-key {{ gitea_gpg_key }}
+  register: _result
+  changed_when: _result.rc != 0
+  environment:
+    GNUPGHOME: "{{ _workdir.path }}"
+
+- name: install | Verify download
+  ansible.builtin.command: gpg --verify {{ gitea_signature }} {{ gitea_binary }}
+  register: _result
+  changed_when: _result.rc != 0
+  args:
+    chdir: "{{ _workdir.path }}"
+  environment:
+    GNUPGHOME: "{{ _workdir.path }}"
+
+- name: install | Move gitea binary to {{ gitea_bin_dir }}
+  ansible.builtin.copy:
+    src: "{{ _workdir.path }}/{{ gitea_binary }}"
+    dest: "{{ gitea_bin_dir }}/gitea"
+    remote_src: true
+    mode: "0755"
+
+- name: install | Remove temporary working directory
+  ansible.builtin.file:
+    path: "{{ _workdir.path }}"
+    state: absent
+  register: _result
+  retries: 5
+  until: _result is success

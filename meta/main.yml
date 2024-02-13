@@ -29,7 +29,4 @@ galaxy_info:
   galaxy_tags:
     - gitea
     - git
-    - git-server
-    - git-gui
     - devops
-    - self-hosted
