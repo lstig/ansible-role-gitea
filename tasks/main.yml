@@ -15,6 +15,12 @@
   ansible.builtin.include_tasks: install.yml
   when: _result.rc != 0 or _result.stdout.split(' ')[2] != gitea_version
 
+- name: Install git
+  ansible.builtin.package:
+    name: git
+    state: present
+    update_cache: true
+
 - name: Create group - {{ gitea_group }}
   ansible.builtin.group:
     name: "{{ gitea_group }}"
