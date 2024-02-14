@@ -49,13 +49,13 @@
     - "{{ gitea_work_dir }}"
     - "{{ gitea_config_dir }}"
 
-# - name: Create gitea configuration file
-#   ansible.builtin.template:
-#     src: app.ini.j2
-#     dest: "{{ gitea_config_path }}/app.ini"
-#     owner: root
-#     group: root
-#     mode: "0444"
+- name: Create gitea configuration file
+  ansible.builtin.copy:
+    dest: "{{ gitea_config_dir }}/app.ini"
+    content: "{{ gitea_config | to_ini }}"
+    owner: root
+    group: root
+    mode: "0444"
 
 - name: Create gitea systemd service file
   ansible.builtin.template:
